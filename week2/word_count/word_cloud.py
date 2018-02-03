@@ -1,5 +1,6 @@
 from operator import itemgetter
-
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
 
 # defining function before call, using it later
 def replace_with_space(s, replace):
@@ -33,5 +34,18 @@ counted_words = word_dict.items()
 
 # sorting
 sorted_by_count = sorted(counted_words, key=itemgetter(1), reverse=True)
-for i in range(0, 10):
-    print("{} {}".format(sorted_by_count[i][0], sorted_by_count[i][1]))
+# for i in range(0, 10):
+#     print("{} {}".format(sorted_by_count[i][0], sorted_by_count[i][1]))
+
+# getting total number of words
+total_words = sum(it[1] for it in counted_words)
+
+# generating frequencies of words -- count divided by total
+words_frequencies = ((it[0], it[1] / total_words) for it in sorted_by_count)
+
+word_cloud = WordCloud().generate_from_frequencies(dict(words_frequencies), max_font_size=60)
+
+plt.figure()
+plt.imshow(word_cloud, interpolation="bilinear")
+plt.axis("off")
+plt.show()
